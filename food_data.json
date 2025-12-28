@@ -1,0 +1,70 @@
+{
+  "foods": [
+    {
+      "id": 1,
+      "name": "Chole Bhature",
+      "description": "Spicy chickpea curry served with deep-fried bread",
+      "category": "Vegetarian",
+      "price_range": "₹80-150",
+      "best_time": "Breakfast/Lunch",
+      "spice_level": "Medium",
+      "location": "Chandni Chowk, Old Delhi",
+      "rating": 4.8
+    },
+    {
+      "id": 2,
+      "name": "Golgappe/Pani Puri",
+      "description": "Crispy hollow balls filled with tamarind water and potato",
+      "category": "Vegetarian",
+      "price_range": "₹30-50",
+      "best_time": "Evening",
+      "spice_level": "Medium-High",
+      "location": "Every street corner",
+      "rating": 4.9
+    },
+    {
+      "id": 3,
+      "name": "Aloo Tikki",
+      "description": "Spiced potato patties with chutneys and chickpeas",
+      "category": "Vegetarian",
+      "price_range": "₹40-60",
+      "best_time": "Evening",
+      "spice_level": "Mild",
+      "location": "Connaught Place, Lajpat Nagar",
+      "rating": 4.5
+    },
+    {
+      "id": 4,
+      "name": "Chicken Roll",
+      "description": "Chicken pieces with onions and sauces wrapped in paratha",
+      "category": "Non-Vegetarian",
+      "price_range": "₹120-180",
+      "best_time": "Lunch/Dinner",
+      "spice_level": "Medium",
+      "location": "Khan Market, South Delhi",
+      "rating": 4.7
+    },
+    {
+      "id": 5,
+      "name": "Jalebi",
+      "description": "Deep-fried sweet spiral soaked in sugar syrup",
+      "category": "Sweet",
+      "price_range": "₹50-100",
+      "best_time": "Breakfast/Evening",
+      "spice_level": "None",
+      "location": "Old Delhi, Chandni Chowk",
+      "rating": 4.6
+    },
+    {
+      "id": 6,
+      "name": "Lassi",
+      "description": "Sweet or salty yogurt-based drink",
+      "category": "Beverage",
+      "price_range": "₹60-120",
+      "best_time": "Afternoon",
+      "spice_level": "None",
+      "location": "Punjabi stalls, Rajouri Garden",
+      "rating": 4.4
+    }
+  ]
+}

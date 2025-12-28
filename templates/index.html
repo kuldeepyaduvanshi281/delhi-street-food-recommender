@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delhi Street Food Recommender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-utensils"></i> Delhi Street Food Guide</h1>
+            <p class="subtitle">Discover the best local street food recommendations powered by Kiro AI</p>
+        </header>
+
+        <div class="main-content">
+            <div class="filter-section">
+                <h2><i class="fas fa-sliders-h"></i> What are you craving?</h2>
+                
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="category"><i class="fas fa-tag"></i> Food Category:</label>
+                        <select id="category">
+                            <option value="Any">Any Category</option>
+                            <option value="Vegetarian">Vegetarian</option>
+                            <option value="Non-Vegetarian">Non-Vegetarian</option>
+                            <option value="Sweet">Sweet</option>
+                            <option value="Beverage">Beverage</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="price"><i class="fas fa-rupee-sign"></i> Price Range:</label>
+                        <select id="price">
+                            <option value="Any">Any Price</option>
+                            <option value="Low">Low (₹30-50)</option>
+                            <option value="Medium">Medium (₹40-100)</option>
+                            <option value="High">High (₹80-180)</option>
+                        </select>
+                    </div>
+                    
+                    <button id="recommend-btn" class="btn-primary">
+                        <i class="fas fa-search"></i> Find My Food!
+                    </button>
+                </div>
+            </div>
+
+            <div class="recommendations-section">
+                <h2><i class="fas fa-star"></i> Top Recommendations</h2>
+                <div id="recommendations-container">
+                    <div class="placeholder">
+                        <i class="fas fa-hamburger fa-3x"></i>
+                        <p>Select your preferences and click "Find My Food!" to get recommendations</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-section">
+                <h3><i class="fas fa-lightbulb"></i> Kiro's Local Tip</h3>
+                <div id="tip-box">
+                    <p id="tip-text">Loading tip from Kiro context...</p>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3><i class="fas fa-info-circle"></i> About This Project</h3>
+                <p>This Street Food Recommender uses Kiro AI with custom context (<code>product.mtl</code>) 
+                to understand local Delhi food culture and provide personalized recommendations.</p>
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-robot"></i>
+                        <span>Powered by Kiro AI</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Local Delhi Knowledge</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-clock"></i>
+                        <span>Time-based Suggestions</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>AI for Bharat - Kiro Week 5 Challenge: The Local Guide</p>
+            <p>Submission Deadline: 28th December 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('recommend-btn').addEventListener('click', getRecommendations);
+        
+        // Load initial tip
+        loadRandomTip();
+        
+        async function getRecommendations() {
+            const category = document.getElementById('category').value;
+            const price = document.getElementById('price').value;
+            
+            document.getElementById('recommendations-container').innerHTML = 
+                '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Finding delicious options...</div>';
+            
+            try {
+                const response = await fetch('/recommend', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        category: category,
+                        price_range: price
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayRecommendations(data.recommendations);
+                    document.getElementById('tip-text').textContent = data.tip;
+                } else {
+                    document.getElementById('recommendations-container').innerHTML = 
+                        '<div class="error">Error: ' + data.error + '</div>';
+                }
+            } catch (error) {
+                document.getElementById('recommendations-container').innerHTML = 
+                    '<div class="error">Connection error. Please try again.</div>';
+            }
+        }
+        
+        function displayRecommendations(foods) {
+            let html = '';
+            
+            if (foods.length === 0) {
+                html = '<div class="no-results"><p>No matching foods found. Try different filters!</p></div>';
+            } else {
+                foods.forEach(food => {
+                    html += `
+                    <div class="food-card">
+                        <div class="food-header">
+                            <h3>${food.name}</h3>
+                            <span class="rating">${food.rating} ★</span>
+                        </div>
+                        <p class="description">${food.description}</p>
+                        <div class="food-details">
+                            <div class="detail">
+                                <i class="fas fa-tag"></i>
+                                <span>${food.category}</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-rupee-sign"></i>
+                                <span>${food.price_range}</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-fire"></i>
+                                <span>${food.spice_level} Spice</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${food.location}</span>
+                            </div>
+                        </div>
+                        <div class="best-time">
+                            <i class="fas fa-clock"></i>
+                            Best time: ${food.best_time}
+                        </div>
+                    </div>
+                    `;
+                });
+            }
+            
+            document.getElementById('recommendations-container').innerHTML = html;
+        }
+        
+        async function loadRandomTip() {
+            try {
+                const response = await fetch('/recommend', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({})
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('tip-text').textContent = data.tip;
+                }
+            } catch (error) {
+                document.getElementById('tip-text').textContent = 
+                    "Visit local food markets for authentic taste!";
+            }
+        }
+    </script>
+</body>
+  </html>

@@ -96,39 +96,82 @@
         // Load initial tip
         loadRandomTip();
         
-        async function getRecommendations() {
-            const category = document.getElementById('category').value;
-            const price = document.getElementById('price').value;
-            
-            document.getElementById('recommendations-container').innerHTML = 
-                '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Finding delicious options...</div>';
-            
-            try {
-                const response = await fetch('/recommend', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        category: category,
-                        price_range: price
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    displayRecommendations(data.recommendations);
-                    document.getElementById('tip-text').textContent = data.tip;
-                } else {
-                    document.getElementById('recommendations-container').innerHTML = 
-                        '<div class="error">Error: ' + data.error + '</div>';
-                }
-            } catch (error) {
-                document.getElementById('recommendations-container').innerHTML = 
-                    '<div class="error">Connection error. Please try again.</div>';
+    function getRecommendations() {
+    const category = document.getElementById('category').value;
+    const price = document.getElementById('price').value;
+    
+    document.getElementById('recommendations-container').innerHTML = 
+        '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Finding delicious options...</div>';
+    
+    // Simulate loading
+    setTimeout(() => {
+        // Local food data
+        const foods = [
+            {
+                name: "Chole Bhature",
+                description: "Spicy chickpea curry served with deep-fried bread",
+                category: "Vegetarian",
+                price_range: "₹80-150",
+                best_time: "Breakfast/Lunch",
+                spice_level: "Medium",
+                location: "Chandni Chowk, Old Delhi",
+                rating: 4.8
+            },
+            {
+                name: "Golgappe/Pani Puri",
+                description: "Crispy hollow balls filled with tamarind water and potato",
+                category: "Vegetarian",
+                price_range: "₹30-50",
+                best_time: "Evening",
+                spice_level: "Medium-High",
+                location: "Every street corner",
+                rating: 4.9
+            },
+            {
+                name: "Aloo Tikki",
+                description: "Spiced potato patties with chutneys and chickpeas",
+                category: "Vegetarian",
+                price_range: "₹40-60",
+                best_time: "Evening",
+                spice_level: "Mild",
+                location: "Connaught Place, Lajpat Nagar",
+                rating: 4.5
             }
+        ];
+        
+        // Filter locally
+        let filtered = foods;
+        if (category !== 'Any') {
+            filtered = filtered.filter(food => food.category === category);
         }
+        
+        // Display
+        let html = '';
+        filtered.forEach(food => {
+            html += `
+            <div class="food-card">
+                <div class="food-header">
+                    <h3>${food.name}</h3>
+                    <span class="rating">${food.rating} ★</span>
+                </div>
+                <p class="description">${food.description}</p>
+                <div class="food-details">
+                    <div class="detail">
+                        <i class="fas fa-tag"></i>
+                        <span>${food.category}</span>
+                    </div>
+                    <div class="detail">
+                        <i class="fas fa-rupee-sign"></i>
+                        <span>${food.price_range}</span>
+                    </div>
+                </div>
+            </div>`;
+        });
+        
+        document.getElementById('recommendations-container').innerHTML = html;
+        document.getElementById('tip-text').textContent = "Pro Tip: Visit Old Delhi for authentic taste!";
+    }, 800);
+    }
         
         function displayRecommendations(foods) {
             let html = '';

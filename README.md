@@ -1,18 +1,35 @@
+---
+
+```markdown
 # Delhi Street Food Recommender 🍢
 
 A Kiro AI-powered web application that recommends the best street food in Delhi based on user preferences and local knowledge.
 
-## 🎯 Features
+## 🚀 Live Demo
+Try the working application: https://kuldeepyaduvanshi281.github.io/delhi-street-food-recommender/
 
-- **Personalized Recommendations**: Get food suggestions based on category and price range
-- **Local Knowledge**: Powered by Kiro AI with custom `product.mtl` context
-- **Time-aware Suggestions**: Recommendations change based on time of day
-- **Interactive UI**: Beautiful and responsive web interface
-- **Local Tips**: Random tips from Delhi street food culture
+## 📱 Features
+- Filter by category (Vegetarian/Non-veg/Sweet/Beverage)
+- Filter by price range (Low/Medium/High)
+- Delhi-specific food recommendations
+- Local tips and suggestions
+- Responsive mobile-friendly design
+- Kiro AI with local context integration
 
-## 🚀 How to Run
+## 🏃‍♂️ How to Run
+### 🌐 Static Demo (Quick):
+Simply visit: https://kuldeepyaduvanshi281.github.io/delhi-street-food-recommender/
 
-1. **Clone the repository**
+### 💻 Flask Version (Full Features):
 ```bash
-git clone https://github.com/yourusername/street-food-recommender.git
-cd street-food-recommender
+# Clone repository
+git clone https://github.com/kuldeepyaduvanshi281/delhi-street-food-recommender.git
+cd delhi-street-food-recommender
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run Flask app
+python app.py
+
+# Open in browser: http://localhost:5000
